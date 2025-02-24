@@ -3,15 +3,15 @@ final float DENSITY = 0.5; // how likely each cell is to be alive at the start
 int[][] grid; // the 2D array to hold 0's and 1's
 
 void setup() {
-  size(2000, 1000); // adjust accordingly, make sure it's a multiple of SPACING
+  size(1000, 800); // adjust accordingly, make sure it's a multiple of SPACING
   noStroke(); // don't draw the edges of each cell
-  frameRate(10); // controls speed of regeneration
+  frameRate(100); // controls speed of regeneration
   grid = new int[height / SPACING][width / SPACING];
   // populate initial grid
   // your code here
   for (int i =0; i<grid.length; i++) {
     for (int j =0; j<grid[0].length; j++) {
-      if (random(1/DENSITY/DENSITY)<=1/DENSITY) {
+      if (Math.random()<=DENSITY) {
         grid [i][j]=1;
       } else {
         grid[i][j]=0;
@@ -41,10 +41,6 @@ int[][] calcNextGrid() {
       }
     }
   }
-
-  // your code here
-
-
   return nextGrid;
 }
 
@@ -78,11 +74,17 @@ int countNeighbors(int i, int j) {
 }
 
 void showGrid() {
+  int count =0;
   color bright =color(255, 204, 0);
+  color dark =color(133, 10, 0);
   background(255);
   for (int i=0; i<grid.length; i++) {
     for (int j=0; j<grid[0].length; j++) {
-      if (grid[i][j]==1) {
+      count = countNeighbors(i, j);
+      if (count==2&&grid[i][j]==1) {
+        fill(dark);
+        square(j*SPACING, i*SPACING, SPACING);
+      } else if (grid[i][j]==1) {
         fill(bright);
         square(j*SPACING, i*SPACING, SPACING);
       }
